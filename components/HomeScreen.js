@@ -1,15 +1,19 @@
 import React from "react";
+import { useState, useEffect } from "react";
+
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   Image,
+  ScrollView,
   TouchableOpacity,
   ImageBackground,
+  Dimensions,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import Carousel from "react-native-snap-carousel";
+import Carousel from "react-native-reanimated-carousel";
 import axios from "axios"; // For fetching images from your database
 
 import HomeBackground from "../images/HomeBackground.jpg";
@@ -107,7 +111,7 @@ export default function HomeScreen() {
           </View>
 
           {/* Carousel for displaying images from the database */}
-          <View style={styles.container_1}>
+          <View style={styles.contain}>
             <Carousel
               data={images}
               renderItem={renderItem}
@@ -154,7 +158,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
   },
-  container_1: {
+  contain: {
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "center",

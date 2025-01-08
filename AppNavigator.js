@@ -1,5 +1,4 @@
 import React from "react";
-import { registerRootComponent } from "expo";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SplashScreen from "./components/SplashScreen";
@@ -30,6 +29,4 @@ const AppNavigator = () => {
     </NavigationContainer>
   );
 };
-registerRootComponent(RegisterScreen);
-
 export default AppNavigator;
