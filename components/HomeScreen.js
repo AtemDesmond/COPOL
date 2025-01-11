@@ -10,55 +10,25 @@ import {
   ScrollView,
   TouchableOpacity,
   ImageBackground,
-  Dimensions,
+  SafeAreaView,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import Carousel from "react-native-reanimated-carousel";
 import axios from "axios"; // For fetching images from your database
+import MyCarousel from "../components/carousel";
 
 import HomeBackground from "../images/HomeBackground.jpg";
 
-const { width: screenWidth } = Dimensions.get("window");
-
-export default function HomeScreen() {
-  const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch images from the database
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const response = await axios.get(
-          "https://your-api-endpoint.com/images"
-        );
-        setImages(response.data); // Ensure your API returns an array of image URLs
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching images:", error);
-        setLoading(false);
-      }
-    };
-    fetchImages();
-  }, []);
-
-  const renderItem = ({ item }) => (
-    <View style={styles.carouselItem}>
-      <Image
-        source={{ uri: item.url }}
-        style={styles.image}
-        resizeMode="cover"
-      />
-    </View>
-  );
-
-  if (loading) {
-    return (
-      <View style={styles.loading}>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-
+export default function HomeScreen({ navigation }) {
+  const carouselData = [
+    { image: require("../images/id card.jpg"), caption: "Missing ID Card" },
+    { image: require("../images/id card_1.jpg"), caption: "Missing ID Card" },
+    { image: require("../images/missing Bike.jpg"), caption: "Missing Bike" },
+    { image: require("../images/missing Bike_1.jpg"), caption: "Missing Bike" },
+    { image: require("../images/missing car.jpg"), caption: "Missing Car" },
+    { image: require("../images/wanted.jpg"), caption: "wanted person" },
+    { image: require("../images/wanted_1.jpg"), caption: "wanted person" },
+    { image: require("../images/wanted_2.jpg"), caption: "wanted person" },
+  ];
   return (
     <ImageBackground
       source={HomeBackground} // Replace with your image URL
@@ -111,30 +81,30 @@ export default function HomeScreen() {
           </View>
 
           {/* Carousel for displaying images from the database */}
-          <View style={styles.contain}>
-            <Carousel
-              data={images}
-              renderItem={renderItem}
-              sliderWidth={screenWidth}
-              itemWidth={screenWidth - 60} // Adjust for padding
-              loop={true}
-              autoplay={true}
-              autoplayInterval={3000}
-            />
-          </View>
+          <SafeAreaView style={styles.contain}>
+            <Text style={styles.heading}>What's New</Text>
+            <MyCarousel data={carouselData} />
+          </SafeAreaView>
 
           {/* Feature Cards */}
           <View style={styles.cardContainer}>
-            <TouchableOpacity style={styles.card}>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => navigation.navigate("Report")}
+            >
               <Text style={styles.cardTitle}>Report a Crime</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.card}>
-              <Text style={styles.cardTitle}>Missing</Text>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => navigation.navigate("Call")}
+            >
+              <Text style={styles.cardTitle}>Emergency Call</Text>
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
       {/* Bottom Tab Navigation Placeholder */}
+
       <View style={styles.bottomBar}>
         <TouchableOpacity style={styles.bottomBarItem}>
           <FontAwesome5 name="map-marker-alt" size={24} color="black" />
@@ -160,6 +130,8 @@ const styles = StyleSheet.create({
   },
   contain: {
     flex: 1,
+    marginBottom: "40",
+    margin: "auto",
     backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
@@ -169,6 +141,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
     paddingHorizontal: 20,
     paddingTop: 40,
+  },
+  heading: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 20,
   },
   header: {
     flexDirection: "row",
@@ -253,6 +230,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   card: {
+    marginBottom: "70",
     backgroundColor: "#ffd700",
     borderRadius: 10,
     width: "45%",

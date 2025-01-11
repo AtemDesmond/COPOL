@@ -13,11 +13,13 @@ import CheckBox from "react-native-checkbox";
 import { Formik } from "formik";
 import * as Yup from "yup"; // For validation schema
 
+import { loginUser } from "../firebaseConfig";
+
 //import LinearGradient from "expo-linear-gradient";
 
 import Login from "../images/Login.jpg";
 
-export default function RegisterScreen() {
+export default function RegisterScreen({ navigation }) {
   const [isSelected, setSelection] = React.useState(false);
 
   const validationSchema = Yup.object().shape({
@@ -37,9 +39,8 @@ export default function RegisterScreen() {
             password: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            console.log("Form Values:", values);
-            alert("Form submitted successfully!");
+          onSubmit={async (values) => {
+            const success = await loginUser(values.email, values.password);
           }}
         >
           {({
@@ -91,7 +92,12 @@ export default function RegisterScreen() {
                   />
                 </View>
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    navigation.navigate("Home");
+                  }}
+                >
                   <Text style={styles.buttonText}>Register</Text>
                 </TouchableOpacity>
               </View>
@@ -127,7 +133,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   formContainer: {
-    width: "90%",
+    width: "100%",
+    height: "100%",
     backgroundColor: "rgba(255, 255, 255, 0.9)",
     padding: 20,
     borderRadius: 20,
@@ -169,6 +176,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#800080",
     paddingVertical: 10,
     borderRadius: 10,
+    marginTop: "25",
     alignItems: "center",
   },
   buttonText: {

@@ -14,7 +14,7 @@ export default function SplashScreen({ navigation }) {
 
     // Navigate to the next screen after 3 seconds
     const timer = setTimeout(() => {
-      navigation.replacee("Home"); // Replace with your home screen
+      navigation.navigate("Login"); // Replace with your Login screen
     }, 3000);
 
     return () => clearTimeout(timer);

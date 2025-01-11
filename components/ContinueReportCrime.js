@@ -14,7 +14,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 
 import HomeBackground from "../images/HomeBackground.jpg";
 
-const ContinueReportCrime = () => {
+const ContinueReportCrime = ({ navigation }) => {
   // Validation schema for Formik
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
@@ -54,7 +54,7 @@ const ContinueReportCrime = () => {
           }) => (
             <View style={styles.container}>
               {/* Header */}
-              <Text style={styles.title}>Title</Text>
+              <Text style={styles.title}>Personal Info</Text>
 
               {/* Form Inputs */}
               <View style={styles.inputGroup}>
@@ -82,6 +82,20 @@ const ContinueReportCrime = () => {
                 />
                 {touched.surname && errors.surname && (
                   <Text style={styles.errorText}>{errors.surname}</Text>
+                )}
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>ID Number</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter ID Number"
+                  onChangeText={handleChange("idNumber")}
+                  onBlur={handleBlur("idNumber")}
+                  value={values.idNumber}
+                />
+                {touched.idNumber && errors.idNumber && (
+                  <Text style={styles.errorText}>{errors.idNumber}</Text>
                 )}
               </View>
 
@@ -167,8 +181,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   inputGroup: {
-    width: "100%",
-    marginBottom: 15,
+    width: "80%",
+    margin: 20,
   },
   label: {
     fontSize: 14,

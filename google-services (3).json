@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "106560805123",
+    "project_id": "cop-on-cloud-1",
+    "storage_bucket": "cop-on-cloud-1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106560805123:android:75df28f6acdaf3dbcb3136",
+        "android_client_info": {
+          "package_name": "App.js"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSth15VYrydCIjqDFnxrBNMj3akUBz-yo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -14,7 +14,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 
 import HomeBackground from "../images/HomeBackground.jpg";
 
-const ReportCrime = () => {
+const ReportCrime = ({ navigation }) => {
   // Validation schema for Formik
   const validationSchema = Yup.object().shape({
     input1: Yup.string().required("This field is required"),
@@ -55,25 +55,12 @@ const ReportCrime = () => {
               <Text style={styles.title}>Report A Crime</Text>
 
               {/* Form Inputs */}
-              <View style={styles.inputGroup}>
-                <Text style={styles.label}>Label</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Value"
-                  onChangeText={handleChange("input1")}
-                  onBlur={handleBlur("input1")}
-                  value={values.input1}
-                />
-                {touched.input1 && errors.input1 && (
-                  <Text style={styles.errorText}>{errors.input1}</Text>
-                )}
-              </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Label</Text>
+                <Text style={styles.label}>Type Of Crime</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Value"
+                  placeholder="Enter Crime Type"
                   onChangeText={handleChange("input2")}
                   onBlur={handleBlur("input2")}
                   value={values.input2}
@@ -84,10 +71,10 @@ const ReportCrime = () => {
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Label</Text>
+                <Text style={styles.label}>Current Address</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Value"
+                  placeholder="Enter Address"
                   onChangeText={handleChange("input3")}
                   onBlur={handleBlur("input3")}
                   value={values.input3}
@@ -98,10 +85,10 @@ const ReportCrime = () => {
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Label</Text>
+                <Text style={styles.label}>Description</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Value"
+                  placeholder="Import a statement"
                   onChangeText={handleChange("input4")}
                   onBlur={handleBlur("input4")}
                   value={values.input4}
@@ -113,10 +100,16 @@ const ReportCrime = () => {
 
               {/* Navigation Buttons */}
               <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => navigation.goBack()}
+                >
                   <Text style={styles.buttonText}>Back</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => navigation.navigate("ContinueReport")}
+                >
                   <Text style={styles.buttonText}>Next</Text>
                 </TouchableOpacity>
               </View>
@@ -156,6 +149,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    alignContent: "center",
   },
   title: {
     fontSize: 24,
