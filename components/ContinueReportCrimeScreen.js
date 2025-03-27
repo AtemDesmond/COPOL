@@ -12,15 +12,17 @@ import { Formik } from "formik";
 import * as Yup from "yup"; // For validation schema
 import { FontAwesome5 } from "@expo/vector-icons";
 
-import HomeBackground from "../images/HomeBackground.jpg";
+import HomeBackground from "../assets/images/HomeBackground.jpg";
 
-const ReportCrime = ({ navigation }) => {
+const ContinueReportCrime = ({ navigation }) => {
   // Validation schema for Formik
   const validationSchema = Yup.object().shape({
-    input1: Yup.string().required("This field is required"),
-    input2: Yup.string().required("This field is required"),
-    input3: Yup.string().required("This field is required"),
-    input4: Yup.string().required("This field is required"),
+    name: Yup.string().required("Name is required"),
+    surname: Yup.string().required("Surname is required"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    message: Yup.string().required("Message is required"),
   });
 
   return (
@@ -31,10 +33,10 @@ const ReportCrime = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Formik
           initialValues={{
-            input1: "",
-            input2: "",
-            input3: "",
-            input4: "",
+            name: "",
+            surname: "",
+            email: "",
+            message: "",
           }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
@@ -52,67 +54,89 @@ const ReportCrime = ({ navigation }) => {
           }) => (
             <View style={styles.container}>
               {/* Header */}
-              <Text style={styles.title}>Report A Crime</Text>
+              <Text style={styles.title}>Personal Info</Text>
 
               {/* Form Inputs */}
-
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Type Of Crime</Text>
+                <Text style={styles.label}>Name</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Enter Crime Type"
-                  onChangeText={handleChange("input2")}
-                  onBlur={handleBlur("input2")}
-                  value={values.input2}
+                  placeholder="Value"
+                  onChangeText={handleChange("name")}
+                  onBlur={handleBlur("name")}
+                  value={values.name}
                 />
-                {touched.input2 && errors.input2 && (
-                  <Text style={styles.errorText}>{errors.input2}</Text>
+                {touched.name && errors.name && (
+                  <Text style={styles.errorText}>{errors.name}</Text>
                 )}
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Current Address</Text>
+                <Text style={styles.label}>Surname</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Enter Address"
-                  onChangeText={handleChange("input3")}
-                  onBlur={handleBlur("input3")}
-                  value={values.input3}
+                  placeholder="Value"
+                  onChangeText={handleChange("surname")}
+                  onBlur={handleBlur("surname")}
+                  value={values.surname}
                 />
-                {touched.input3 && errors.input3 && (
-                  <Text style={styles.errorText}>{errors.input3}</Text>
+                {touched.surname && errors.surname && (
+                  <Text style={styles.errorText}>{errors.surname}</Text>
                 )}
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Description</Text>
+                <Text style={styles.label}>ID Number</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Import a statement"
-                  onChangeText={handleChange("input4")}
-                  onBlur={handleBlur("input4")}
-                  value={values.input4}
+                  placeholder="Enter ID Number"
+                  onChangeText={handleChange("idNumber")}
+                  onBlur={handleBlur("idNumber")}
+                  value={values.idNumber}
                 />
-                {touched.input4 && errors.input4 && (
-                  <Text style={styles.errorText}>{errors.input4}</Text>
+                {touched.idNumber && errors.idNumber && (
+                  <Text style={styles.errorText}>{errors.idNumber}</Text>
                 )}
               </View>
 
-              {/* Navigation Buttons */}
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => navigation.goBack()}
-                >
-                  <Text style={styles.buttonText}>Back</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => navigation.navigate("ContinueReport")}
-                >
-                  <Text style={styles.buttonText}>Next</Text>
-                </TouchableOpacity>
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Value"
+                  keyboardType="email-address"
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                  value={values.email}
+                />
+                {touched.email && errors.email && (
+                  <Text style={styles.errorText}>{errors.email}</Text>
+                )}
               </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Message</Text>
+                <TextInput
+                  style={[styles.input, styles.textArea]}
+                  placeholder="Value"
+                  multiline
+                  numberOfLines={4}
+                  onChangeText={handleChange("message")}
+                  onBlur={handleBlur("message")}
+                  value={values.message}
+                />
+                {touched.message && errors.message && (
+                  <Text style={styles.errorText}>{errors.message}</Text>
+                )}
+              </View>
+
+              {/* Submit Button */}
+              <TouchableOpacity
+                style={styles.submitButton}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.submitButtonText}>Submit</Text>
+              </TouchableOpacity>
             </View>
           )}
         </Formik>
@@ -149,7 +173,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    alignContent: "center",
   },
   title: {
     fontSize: 24,
@@ -158,8 +181,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   inputGroup: {
-    width: "100%",
-    marginBottom: 15,
+    width: "80%",
+    margin: 20,
   },
   label: {
     fontSize: 14,
@@ -172,24 +195,22 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 16,
   },
+  textArea: {
+    textAlignVertical: "top",
+  },
   errorText: {
     color: "red",
     fontSize: 12,
     marginTop: 5,
   },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
+  submitButton: {
+    backgroundColor: "#000",
+    paddingVertical: 12,
+    paddingHorizontal: 40,
+    borderRadius: 8,
     marginTop: 20,
   },
-  button: {
-    backgroundColor: "#ff0000",
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-  },
-  buttonText: {
+  submitButtonText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
@@ -213,4 +234,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ReportCrime;
+export default ContinueReportCrime;

@@ -1,12 +1,17 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
 import Carousel from "react-native-snap-carousel-v4";
+import Toast from "react-native-toast-message";
 
 const { width } = Dimensions.get("window");
 
 const MyCarousel = ({ data = [] }) => {
   if (!Array.isArray(data)) {
-    console.error("The `data` prop must be an array.");
+    Toast.show({
+      type: "error",
+      text1: "Error",
+      text2: "Invalid data provided for Carousel, expected an array",
+    });
     return null;
   }
 
@@ -26,7 +31,7 @@ const MyCarousel = ({ data = [] }) => {
       data={data}
       renderItem={renderItem}
       sliderWidth={width}
-      itemWidth={width * 0.75}
+      itemWidth={width * 1.0}
       inactiveSlideScale={0.3}
       inactiveSlideOpacity={0.2}
       autoplay={true} // Enable auto-slide
@@ -42,12 +47,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
     borderRadius: 10,
-    padding: 10,
+    padding: (0, 0, 0, 10),
     width: "100%",
   },
   image: {
     width: "100%",
-    height: 150,
+    height: 170,
     borderRadius: 8,
     resizeMode: "cover",
   },

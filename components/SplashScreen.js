@@ -14,7 +14,7 @@ export default function SplashScreen({ navigation }) {
 
     // Navigate to the next screen after 3 seconds
     const timer = setTimeout(() => {
-      navigation.navigate("Login"); // Replace with your Login screen
+      navigation.navigate("ReportCase"); // Replace with your Login screen
     }, 3000);
 
     return () => clearTimeout(timer);
@@ -24,7 +24,7 @@ export default function SplashScreen({ navigation }) {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0056D2" />
       <Animated.View style={{ ...styles.logoContainer, opacity: fadeAnim }}>
-        <Text style={styles.logo}>CopOnCloud</Text>
+        <Text style={styles.logo}>COPOL</Text>
         <Text style={styles.subtitle}>Fight against Crime with us</Text>
         <Text style={styles.footer}>Police</Text>
       </Animated.View>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   footer: {
     fontSize: 16,
     color: "#FFFFFF",
-    marginTop: 220,
+    marginTop: "100%",
     fontFamily: "Cursive",
     alignItems: "end",
   },

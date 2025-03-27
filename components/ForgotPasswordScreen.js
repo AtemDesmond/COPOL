@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,13 +6,18 @@ import {
   TextInput,
   TouchableOpacity,
   ImageBackground,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup"; // For validation schema
-
-import Login from "../images/Login.jpg";
+import { forgotPassword } from "../firebaseConfig"; // Firebase function
+import Login from "../assets/images/Login.jpg";
+import { debounce } from "lodash"; // Import debounce function
 
 const ForgotPassword = ({ navigation }) => {
+  const [loading, setLoading] = useState(false);
+
   // Validation schema for Formik
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -20,21 +25,28 @@ const ForgotPassword = ({ navigation }) => {
       .required("Email is required"),
   });
 
+  const handlePasswordReset = debounce(async (email) => {
+    setLoading(true);
+    const result = await forgotPassword(email);
+    setLoading(false);
+    Alert.alert(
+      result.success ? "Success" : "Error",
+      result.success
+        ? "Password reset instructions have been sent to your email."
+        : "Failed to send reset email. Please check your email address and try again."
+    );
+    if (result.success) {
+      navigation.navigate("Login");
+    }
+  }, 300); // Debounce to prevent rapid successive requests
+
   return (
-    <ImageBackground
-      source={Login} // Replace with your image URL
-      style={styles.backgroundImage}
-    >
+    <ImageBackground source={Login} style={styles.backgroundImage}>
       <View style={styles.container}>
         <Formik
-          initialValues={{
-            email: "",
-          }}
+          initialValues={{ email: "" }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            console.log("Reset Email:", values.email);
-            alert("Password reset instructions sent to your email.");
-          }}
+          onSubmit={(values) => handlePasswordReset(values.email)}
         >
           {({
             handleChange,
@@ -45,11 +57,10 @@ const ForgotPassword = ({ navigation }) => {
             touched,
           }) => (
             <View style={styles.formContainer}>
-              {/* Email Input */}
               <Text style={styles.label}>Email</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Enter Your Current Email Address"
+                placeholder="Enter Your Email Address"
                 keyboardType="email-address"
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")}
@@ -59,19 +70,23 @@ const ForgotPassword = ({ navigation }) => {
                 <Text style={styles.errorText}>{errors.email}</Text>
               )}
 
-              {/* Action Buttons */}
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
                   style={[styles.button, styles.cancelButton]}
-                  onPress={() => navigation.goBack()} // Go back to the previous screen
+                  onPress={() => navigation.goBack()}
                 >
                   <Text style={styles.cancelButtonText}>Cancel</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.button, styles.resetButton]}
                   onPress={handleSubmit}
+                  disabled={loading}
                 >
-                  <Text style={styles.resetButtonText}>Reset Password</Text>
+                  {loading ? (
+                    <ActivityIndicator size="small" color="#fff" />
+                  ) : (
+                    <Text style={styles.resetButtonText}>Reset Password</Text>
+                  )}
                 </TouchableOpacity>
               </View>
             </View>
@@ -96,7 +111,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   formContainer: {
-    backgroundColor: "rgba(255, 255, 255, 0.9)", // Transparent background
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
     borderRadius: 16,
     padding: 20,
     width: "100%",

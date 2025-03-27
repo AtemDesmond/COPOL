@@ -1,6 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, Alert, Linking } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+  Linking,
+  ImageBackground,
+} from "react-native";
 import * as Location from "expo-location";
+
+import TopNavigationBar from "./TopNavigationBar";
+import BottomNavigationBar from "./BottomNavigationBar";
+import HomeBackground from "../assets/images/HomeBackground.jpg";
 
 const CallPoliceScreen = () => {
   const [location, setLocation] = useState(null);
@@ -57,31 +70,75 @@ const CallPoliceScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Emergency Actions</Text>
-      <Button title="Call Police" onPress={callPolice} />
-      <View style={styles.spacing} />
-      <Button
-        title="Send Location to Database"
-        onPress={sendLocationToDatabase}
-      />
-    </View>
+    <ImageBackground source={HomeBackground} style={styles.backgroundImage}>
+      <View style={styles.container}>
+        <TopNavigationBar />
+        <ScrollView>
+          <Text style={styles.title}>Emergency Actions</Text>
+          <TouchableOpacity
+            style={styles.ButtonBackground}
+            onPress={callPolice}
+          >
+            <Text style={styles.text}>Call</Text>
+          </TouchableOpacity>
+
+          <View style={styles.spacing} />
+          <TouchableOpacity
+            style={styles.LocationBackground}
+            onPress={sendLocationToDatabase}
+          >
+            <Text style={styles.text}>Send Location</Text>
+          </TouchableOpacity>
+        </ScrollView>
+        <BottomNavigationBar />
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
+    marginBottom: 5,
+  },
+  ButtonBackground: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ff0000",
+    borderRadius: 100, // Half of height for perfect circle
+    width: 200, // Increased width
+    height: 200, // Increased height
+    padding: 20, // Reduced padding
   },
   text: {
+    color: "white",
     fontSize: 18,
-    marginBottom: 20,
+    textAlign: "center", // Ensure text is centered
   },
   spacing: {
-    height: 20,
+    height: 90,
+  },
+  LocationBackground: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ff0000",
+    borderRadius: 40, // Half of height for perfect circle
+    padding: 20, // Reduced padding
+  },
+  title: {
+    height: 50,
+    color: "white",
+    marginBottom: 50,
+    fontSize: 20,
+    textAlign: "center",
   },
 });
 

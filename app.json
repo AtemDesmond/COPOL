@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Cop",
+    "name": "Copol",
     "slug": "Cop",
     "scheme": "mystack",
     "version": "1.0.0",
@@ -14,9 +14,11 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.community.copol"
     },
     "android": {
+      "package": "com.community.copol",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
